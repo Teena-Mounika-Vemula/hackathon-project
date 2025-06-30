@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Chart from 'chart.js/auto';
 // Assuming Chart.js is globally available, or linked via script tag in index.html
 // If not, you might need to import it like: import Chart from 'chart.js/auto';
 

@@ -5,6 +5,8 @@ import SignUpPage from './components/signuppage.jsx';
 import OrgDashboard from './organiserDashboard/orgDashboard.jsx'; // Import the OrgDashboard component
 import Events from './organiserDashboard/Events.jsx'; // Import the Events component
 import ChatbotWidget from './components/ChatbotWidget.jsx';
+import VolDashboard from './volunteerDashboard/volDashboard.jsx'; // adjust the path based on your folder structure
+
 
 
 const App = () => {
@@ -24,6 +26,7 @@ const App = () => {
     };
 
     const renderPage = () => {
+         console.log("Rendering page:", currentPage); 
         switch (currentPage) {
             case 'home':
                 // Pass both navigateTo and currentSection to HomePage
@@ -32,10 +35,12 @@ const App = () => {
                 return <LoginPage navigateTo={navigateTo} />;
             case 'signup':
                 return <SignUpPage navigateTo={navigateTo} />;
-            case 'dashboard': // This case will render the OrgDashboard
+            case 'orgdashboard': // This case will render the OrgDashboard
                 return <OrgDashboard navigateTo={navigateTo} />;
             case 'events': // This case will render the Events page
                 return <Events navigateTo={navigateTo} />;
+            case 'voldashboard': // This case will render the Events page
+                return < VolDashboard navigateTo={navigateTo} />;
             // 'about' and 'articles' cases are no longer separate pages, they'll be sections on 'home'
             // default will also render HomePage
             default:
@@ -47,7 +52,7 @@ const App = () => {
         <div className="min-h-screen flex flex-col">
             {/* Conditional Navigation - START */}
             {/* The global navigation will only show if currentPage is NOT 'login', 'signup', 'dashboard', or 'events' */}
-            {currentPage !== 'login' && currentPage !== 'signup' && currentPage !== 'dashboard' && currentPage !== 'events' && (
+            {currentPage !== 'login' && currentPage !== 'signup' && currentPage !== 'orgdashboard' && currentPage !== 'events' && (
                 <nav className="bg-sky-500 text-white shadow-lg sticky top-0 z-50">
                     <div className="container mx-auto px-4 py-3 flex justify-between items-center">
                         <div className="flex items-center space-x-2">

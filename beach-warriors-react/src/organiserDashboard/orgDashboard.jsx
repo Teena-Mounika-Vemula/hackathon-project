@@ -20,7 +20,7 @@ const ChartBar = ({ item, animatedHeight }) => (
 );
 
 
-const OrgDashboard = ({ navigateTo, initialActiveTab = 'dashboard' }) => {
+const OrgDashboard = ({ navigateTo, initialActiveTab = 'orgdashboard' }) => {
     // State for sidebar visibility on mobile
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     // State for active navigation item within the dashboard
@@ -203,7 +203,7 @@ const OrgDashboard = ({ navigateTo, initialActiveTab = 'dashboard' }) => {
     // Function to render content based on activeNavItem
     const renderDashboardContent = () => {
         switch (activeNavItem) {
-            case 'dashboard':
+            case 'orgdashboard':
                 return (
                     <>
                         <div className="flex justify-between items-center mb-8">
@@ -652,7 +652,7 @@ const OrgDashboard = ({ navigateTo, initialActiveTab = 'dashboard' }) => {
                         {/* Navigation */}
                         <nav className="flex-1 overflow-y-auto py-4 px-3">
                             <div className="flex flex-col space-y-1"> {/* Changed to flex-col and space-y for vertical stacking */}
-                                <button onClick={() => handleDashboardNavClick('dashboard')} className={`nav-item ${activeNavItem === 'dashboard' ? 'active' : ''}`}>
+                                <button onClick={() => handleDashboardNavClick('orgdashboard')} className={`nav-item ${activeNavItem === 'orgdashboard' ? 'active' : ''}`}>
                                     {/* Dashboard Icon */}
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
