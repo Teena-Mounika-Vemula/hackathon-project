@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebaseConfig"; // adjust the path as needed
+
 
 const LoginPage = ({ navigateTo }) => {
     // State to toggle between Volunteer and Organizer forms
@@ -6,7 +9,7 @@ const LoginPage = ({ navigateTo }) => {
     // States for input fields
     const [volunteerEmail, setVolunteerEmail] = useState('');
     const [volunteerPassword, setVolunteerPassword] = useState('');
-    const [organizerId, setOrganizerId] = useState('');
+    const [organizerEmail, setorganizerEmail] = useState('');
     const [organizerPassword, setOrganizerPassword] = useState('');
 
     // State for main heading text, initialized based on default isVolunteer state
@@ -28,33 +31,42 @@ const LoginPage = ({ navigateTo }) => {
             // Clear form fields when switching between forms
             setVolunteerEmail('');
             setVolunteerPassword('');
-            setOrganizerId('');
+            setorganizerEmail('');
             setOrganizerPassword('');
             return newIsVolunteer;
         });
     };
 
     // Handle login for Volunteer form
-    const handleVolunteerLogin = (e) => {
-        e.preventDefault();
-        console.log("Volunteer Login Attempt:", { volunteerEmail, volunteerPassword });
-        // Simulate successful login for volunteer
-        setTimeout(() => {
-            console.log("Volunteer login successful! Navigating to home.");
-            navigateTo('home'); // Navigate to home page for volunteers
-        }, 1000);
-    };
+    const handleVolunteerLogin = async (e) => {
+    e.preventDefault();
+    console.log("Volunteer Login Attempt:", { volunteerEmail, volunteerPassword });
+
+    try {
+        await signInWithEmailAndPassword(auth, volunteerEmail, volunteerPassword);
+        console.log("Volunteer login successful!");
+        navigateTo('home'); // Navigate to volunteer home page
+    } catch (error) {
+        console.error("Volunteer login failed:", error.message);
+        alert("Login failed: " + error.message);
+    }
+};
+
 
     // Handle login for Organizer form
-    const handleOrganizerLogin = (e) => {
-        e.preventDefault();
-        console.log("Organizer Login Attempt:", { organizerId, organizerPassword });
-        // Simulate successful login for organizer
-        setTimeout(() => {
-            console.log("Organizer login successful! Navigating to dashboard.");
-            navigateTo('dashboard'); // Navigate to OrgDashboard for organizers
-        }, 1000);
-    };
+    const handleOrganizerLogin = async (e) => {
+    e.preventDefault();
+    console.log("Organizer Login Attempt:", { organizerEmail, organizerPassword });
+
+    try {
+        await signInWithEmailAndPassword(auth, organizerEmail, organizerPassword); // Make sure `organizerEmail` is actually an email
+        console.log("Organizer login successful!");
+        navigateTo('dashboard'); // Navigate to organizer dashboard
+    } catch (error) {
+        console.error("Organizer login failed:", error.message);
+        alert("Login failed: " + error.message);
+    }
+};
 
     return (
         <>
@@ -240,15 +252,15 @@ const LoginPage = ({ navigateTo }) => {
                                 <div id="organizer-form" className="login-form-container">
                                     <form onSubmit={handleOrganizerLogin}> {/* Added onSubmit handler */}
                                         <div className="mb-4">
-                                            <label htmlFor="organizer-id" className="block text-gray-700 text-sm font-medium mb-2">Organizer ID</label>
+                                            <label htmlFor="organizer-id" className="block text-gray-700 text-sm font-medium mb-2">Organizer Email</label>
                                             <input
                                                 type="text"
                                                 id="organizer-id"
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition"
-                                                placeholder="Enter your organizer ID"
+                                                placeholder="Enter your organizer email"
                                                 required
-                                                value={organizerId}
-                                                onChange={(e) => setOrganizerId(e.target.value)}
+                                                value={organizerEmail}
+                                                onChange={(e) => setorganizerEmail(e.target.value)}
                                             />
                                         </div>
                                         

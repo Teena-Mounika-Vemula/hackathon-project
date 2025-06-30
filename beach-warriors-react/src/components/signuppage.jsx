@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react"; // Removed useEffect import as direct onClick is used for menu toggle
 import * as faceapi from "face-api.js";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebaseConfig'; // adjust the path if needed
+
 
 const SignUpPage = ({ navigateTo }) => {
   // State for managing the current step in the multi-step form
@@ -206,18 +209,28 @@ const SignUpPage = ({ navigateTo }) => {
   };
 
   // Handler for the "Submit" button click (final step)
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+  const handleSubmit = async (e) => {
+  e.preventDefault(); // Prevent default form submission behavior
 
-    showFact(stepsContent.length - 1); // Show the last fact (for face scan)
-    createConfetti(); // Create confetti for celebration
-    createConfetti(); // Call again for more confetti!
+  // Firebase: create user
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
 
-    // After a delay, switch to the success message view
+    // Optional: You can save other user data to Firestore here if needed
+
+    showFact(stepsContent.length - 1); // Show last fact
+    createConfetti();
+    createConfetti();
+
     setTimeout(() => {
       setShowSuccessMessage(true);
-    }, 2000); // Allow time for the last fact/confetti to show
-  };
+    }, 2000);
+  } catch (error) {
+    console.error('Error creating user:', error.message);
+    alert('Signup failed: ' + error.message);
+  }
+};
+
 
   // useEffect hook for side effects (like animations based on step changes)
   // This part correctly uses currentStep from state, so it's fine.
