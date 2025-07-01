@@ -11,6 +11,7 @@ import EducationHub from './volunteerDashboard/volEduHub.jsx';
 import ImpactCam from './volunteerDashboard/impactCam.jsx';
 import EventDashboard from './volunteerDashboard/cleanupEvents.jsx';
 import WasteClassifier from './volunteerDashboard/wasteClassifier.jsx';
+import AdDashboard from './adminDashboard/adDashboard.jsx'; // adjust path as needed
 
 const App = () => {
     // currentPage will track the main page ('home', 'login', 'signup', 'dashboard', 'events')
@@ -38,7 +39,9 @@ const App = () => {
                 return <LoginPage navigateTo={navigateTo} />;
             case 'signup':
                 return <SignUpPage navigateTo={navigateTo} />;
-            case 'orgdashboard': // This case will render the OrgDashboard
+            case 'adminDashboard':
+                return <AdDashboard navigateTo={navigateTo} />;      
+            case 'dashboard': // This case will render the OrgDashboard
                 return <OrgDashboard navigateTo={navigateTo} />;
             case 'events': // This case will render the Events page
                 return <Events navigateTo={navigateTo} />;
