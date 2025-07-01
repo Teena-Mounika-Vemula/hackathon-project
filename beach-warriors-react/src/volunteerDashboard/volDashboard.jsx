@@ -1,25 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto'; // Using 'chart.js/auto' for automatic registeration of controllers, elements, scales, and plugins.
+import Sidebar from './Sidebar';
 
-const VolDashboard = () => {
-    const chartRef = useRef(null); // Ref for the Chart.js canvas element
-    const chartInstance = useRef(null); // Ref to store the Chart.js instance
+const VolDashboard = ({ navigateTo }) => {  // ✅ accept navigateTo as a prop
+    const chartRef = useRef(null);
+    const chartInstance = useRef(null);
 
     const [showNotification, setShowNotification] = useState(true);
     const [showAchievementPopup, setShowAchievementPopup] = useState(false);
-    const [activeNavItem, setActiveNavItem] = useState('voldashboard'); // State for active navigation item
+    const [activeNavItem, setActiveNavItem] = useState('voldashboard');
 
-    // Function to close the notification banner
     const closeNotification = () => {
         setShowNotification(false);
     };
 
-    // Function to handle navigation item clicks
     const handleNavItemClick = (itemName) => {
         setActiveNavItem(itemName);
-        // In a real app, you would likely use React Router or similar
-        // to change the view/route based on the active item.
-        console.log(`Navigating to: ${itemName}`);
+        navigateTo(itemName); // ✅ trigger page change in App.jsx
     };
 
     // Effect for Chart.js initialization
@@ -169,73 +166,10 @@ const VolDashboard = () => {
                     color: #ffffff;
                 }
 
-                .sidebar {
-                    background: linear-gradient(180deg, #1a1a1a 0%, #0f1419 100%);
-                    border-right: 2px solid #22c55e;
-                    box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
-                }
 
-                .sidebar-header {
-                    border-bottom: 2px solid #22c55e;
-                }
+                
 
-                .logo-glow {
-                    position: absolute;
-                    top: -10px;
-                    left: -10px;
-                    right: -10px;
-                    bottom: -10px;
-                    background: conic-gradient(from 0deg, #22c55e, #3b82f6, #a855f7, #22c55e);
-                    border-radius: 50%;
-                    opacity: 0.3;
-                    animation: rotate 4s linear infinite;
-                }
-
-                .sidebar-header h2 {
-                    text-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
-                }
-
-                .player-level {
-                    background: linear-gradient(135deg, #1e293b, #334155);
-                    border: 1px solid #22c55e;
-                    box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
-                }
-
-                .level-badge {
-                    background: linear-gradient(135deg, #22c55e, #16a34a);
-                }
-
-                .xp-bar {
-                    background: #1e293b;
-                    border: 1px solid #374151;
-                }
-
-                .xp-fill {
-                    background: linear-gradient(90deg, #22c55e, #3b82f6);
-                    animation: pulse-glow 2s ease-in-out infinite alternate;
-                }
-
-                .nav-item::before {
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    height: 100%;
-                    width: 0;
-                    background: linear-gradient(90deg, rgba(34, 197, 94, 0.2), rgba(59, 130, 246, 0.2));
-                    transition: width 0.3s ease;
-                }
-
-                .nav-item:hover::before {
-                    width: 100%;
-                }
-
-                .nav-item.active {
-                    background: linear-gradient(90deg, rgba(34, 197, 94, 0.3), rgba(59, 130, 246, 0.1));
-                    border-left-color: #22c55e;
-                    box-shadow: inset 0 0 20px rgba(34, 197, 94, 0.2);
-                }
-
+                
                 .notification-banner {
                     background: linear-gradient(135deg, #22c55e, #16a34a);
                     box-shadow: 0 8px 32px rgba(34, 197, 94, 0.4);
@@ -500,8 +434,12 @@ const VolDashboard = () => {
                 <div className="achievement-desc text-white text-sm opacity-90">Eco Guardian Level Reached</div>
             </div>
 
-            {/* Sidebar */}
-            <div className="sidebar fixed left-0 top-0 w-[280px] h-screen py-5 z-[1000] flex flex-col">
+             {/* Sidebar */}
+            <Sidebar activeNavItem={activeNavItem} handleNavItemClick={handleNavItemClick} />
+
+
+            {/*Sidebar*/}
+            {/* <div className="sidebar fixed left-0 top-0 w-[280px] h-screen py-5 z-[1000] flex flex-col">
                 <div className="sidebar-header px-5 pb-[30px] text-center relative border-b-2">
                     <div className="logo-container relative inline-block">
                         <div className="logo-glow absolute top-[-10px] left-[-10px] right-[-10px] bottom-[-10px] rounded-full opacity-30"></div>
@@ -525,7 +463,7 @@ const VolDashboard = () => {
                         className={`nav-item flex items-center px-5 py-4 cursor-pointer transition-all duration-300 ease-in-out border-l-4 border-l-transparent relative overflow-hidden ${
                             activeNavItem === 'impact-dashboard' ? 'active' : ''
                         }`}
-                        onClick={() => handleNavItemClick('impact-dashboard')}
+                        onClick={() => handleNavItemClick('voldashboard')}
                     >
                         <div className="nav-icon w-6 h-6 mr-4 text-lg">🏠</div>
                         <span className="nav-text text-base font-semibold relative z-20">Impact Dashboard</span>
@@ -593,7 +531,7 @@ const VolDashboard = () => {
                         <span className="nav-text text-base font-semibold relative z-20">Logout</span>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             {/* Main Content */}
             <div className="main-content ml-[280px] p-5 min-h-screen">
