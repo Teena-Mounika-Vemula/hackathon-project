@@ -1,0 +1,11 @@
+{
+  "name": "beach-warriors-project",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently \"cd beach-warriors-react && npm run dev\" \"cd beach-warriors-backend/beachbot-backend && node server.js\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}
+

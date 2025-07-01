@@ -97,43 +97,39 @@ const OrgDashboard = ({ navigateTo, initialActiveTab = 'orgdashboard' }) => {
     // Effect for animating chart bars when data changes or component mounts
     useEffect(() => {
         const currentData = wasteCollectionData[chartTrend];
-        // Create a map of original heights for easy access
+        if (!currentData) return;
+      
         const originalHeightsMap = currentData.reduce((acc, item) => {
-            acc[item.id] = item.height;
-            return acc;
+          acc[item.id] = item.height;
+          return acc;
         }, {});
-
-        // 1. Immediately set to full height
-        setAnimatedChartHeights(originalHeightsMap);
-
-        const fallDelayMs = 1500; // Delay before bars fall to 0%
-        const riseDelayMs = 100;  // Very short delay after falling before rising again
-
-        let fallTimeoutId;
-        let riseTimeoutId;
-
-        // Schedule falling to 0%
-        fallTimeoutId = setTimeout(() => {
-            const zeroHeightsMap = currentData.reduce((acc, item) => {
-                acc[item.id] = '0%';
-                return acc;
-            }, {});
-            setAnimatedChartHeights(zeroHeightsMap);
+      
+        setAnimatedChartHeights((prev) => {
+          // prevent state updates if already same (optional optimization)
+          const isSame = JSON.stringify(prev) === JSON.stringify(originalHeightsMap);
+          return isSame ? prev : originalHeightsMap;
+        });
+      
+        const fallDelayMs = 1500;
+        const riseDelayMs = 100;
+        const fallTimeoutId = setTimeout(() => {
+          const zeroHeightsMap = currentData.reduce((acc, item) => {
+            acc[item.id] = '0%';
+            return acc;
+          }, {});
+          setAnimatedChartHeights(zeroHeightsMap);
         }, fallDelayMs);
-
-        // Schedule rising back to full height
-        riseTimeoutId = setTimeout(() => {
-            setAnimatedChartHeights(originalHeightsMap);
+      
+        const riseTimeoutId = setTimeout(() => {
+          setAnimatedChartHeights(originalHeightsMap);
         }, fallDelayMs + riseDelayMs);
-
-        // Cleanup function for timeouts
+      
         return () => {
-            clearTimeout(fallTimeoutId);
-            clearTimeout(riseTimeoutId);
+          clearTimeout(fallTimeoutId);
+          clearTimeout(riseTimeoutId);
         };
-    }, [chartTrend, wasteCollectionData]); // Re-run when chartTrend or wasteCollectionData changes
-
-
+      }, [chartTrend, JSON.stringify(wasteCollectionData)]); // ← safer to stringify if deeply nested
+      
     // Effect for creating bubbles dynamically (existing)
     useEffect(() => {
         const bubbleContainer = bubbleContainerRef.current;
@@ -720,16 +716,28 @@ const OrgDashboard = ({ navigateTo, initialActiveTab = 'orgdashboard' }) => {
                             </div>
                         </div> 
 
-                        <button
-                        onClick={() => navigateTo('home')}
-                        className="w-full flex items-center justify-center px-3 py-1.5 mt-2 text-xs font-medium text-white bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600 rounded-full shadow-sm transition-all duration-200"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a1 1 0 01-1 1H6a2 2 0 01-2-2V7a2 2 0 012-2h6a1 1 0 011 1v1" />
+                        <div className="mt-auto mb-3">
+                            <button
+                            onClick={() => navigateTo('home')}
+                            className="w-full flex items-center justify-center px-3 py-1.5 text-xs font-medium text-cyan-600 bg-white border border-cyan-500 rounded-[10px] hover:bg-cyan-50 transition-all duration-200"
+                            >
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-3.5 w-3.0 mr-1.5 text-cyan-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            >
+                            <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a1 1 0 01-1 1H6a2 2 0 01-2-2V7a2 2 0 012-2h6a1 1 0 011 1v1"
+                            />
                             </svg>
-                                Logout
-                        </button>
-
+                            Logout
+                            </button>
+                        </div>
                     </div>
                 </aside>
 
