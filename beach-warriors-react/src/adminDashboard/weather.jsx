@@ -78,7 +78,7 @@ const MainContent = () => {
         <div className="flex-1 bg-slate-100">
 
             {/* Main content area */}
-            <main className="bg-white m-4 md:m-5 mt-0 p-6 md:p-8 rounded-2xl shadow-lg min-h-[calc(100vh-120px)]">
+            <main className="bg-white m-4 md:m-5 mt-0 p-6 md:p-8 rounded-2xl min-h-[calc(100vh-120px)]">
                 {/* Weather Header */}
                 <div className="pb-5 border-b border-slate-200">
                     <h2 className="text-3xl font-bold text-slate-800 mb-2">Weather Intelligence Center</h2>

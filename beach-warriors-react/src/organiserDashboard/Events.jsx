@@ -113,11 +113,6 @@ const Events = () => {
         return matchesSearch && matchesEventFilter && matchesBeachFilter;
     });
 
-    // Placeholder for Create New Event (originally an alert)
-    const showCreateEventModal = () => {
-        // Changed alert to console.log as alerts are not allowed in this environment
-        console.log('Create New Event functionality would open here. This would include form fields for event details, date/time selection, location, target volunteers, etc.');
-    };
 
     return (
         <>
@@ -736,7 +731,7 @@ const Events = () => {
             <div className="event-management-container p-4 md:p-8 relative">
                 <div className="header">
                     <h1 className="text-2xl md:text-3xl font-bold text-cyan-900">Event Management</h1>
-                    <p className="text-cyan-600">Organize, track, and optimize your beach cleanup drives</p>
+                    <p className="text-cyan-600 mt-1 mb-1">Organize, track, and optimize your beach cleanup drives</p>
                 </div>
 
                 {/* Controls Section */}
@@ -774,7 +769,6 @@ const Events = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </div>
-                    <button className="create-btn" onClick={showCreateEventModal}>Create New Event</button>
                 </div>
 
                 {/* Events Grid */}

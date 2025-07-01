@@ -200,6 +200,8 @@ const adDashboard = ({ navigateToHome }) => { // Added navigateToHome prop
     const [notificationsOpen, setNotificationsOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState('dashboard');
     const [pageTitle, setPageTitle] = useState('Dashboard');
+    const [showNotifications, setShowNotifications] = useState(false);
+
 
     // State for Volunteers page filters
     const [volunteerRoleFilter, setVolunteerRoleFilter] = useState('all');
@@ -251,7 +253,10 @@ const adDashboard = ({ navigateToHome }) => { // Added navigateToHome prop
 
     // Handle logout
     const handleLogout = () => {
-        console.log('User logged out. Navigating to home page.');
+        const confirmLogout = window.confirm("Are you sure you want to log out?");
+        if (!confirmLogout) return;
+
+        console.log('User confirmed logout. Navigating to home page.');
         
         // Clear any user session data here if needed
         // localStorage.removeItem('userToken'); // Example
@@ -868,8 +873,8 @@ const adDashboard = ({ navigateToHome }) => { // Added navigateToHome prop
                     <div className="profile-info">
                         <div className="profile-avatar">A</div>
                         <div>
-                            <div style={{ fontWeight: 600, color: '#1a202c' }}>Admin User</div>
-                            <div style={{ color: '#718096', fontSize: '0.9rem' }}>Super Admin</div>
+                            <div style={{ fontWeight: 600, color: '#1a202c' }}>Admin1</div>
+                            <div style={{ color: '#718096', fontSize: '0.9rem' }}>Admin</div>
                         </div>
                     </div>
                     {/* Logout Button added below the profile section */}
@@ -890,30 +895,40 @@ const adDashboard = ({ navigateToHome }) => { // Added navigateToHome prop
                 </div>
 
                 {notificationsOpen && (
-                    <div className="notification-panel" id="notification-panel">
-                        <h3 style={{ marginBottom: '1rem' }}>Recent Activities</h3>
-                        <div className="notification-item">
-                            <strong>New volunteer registration:</strong> Sarah Johnson
-                            <div style={{ color: '#718096', fontSize: '0.9rem' }}>2 hours ago</div>
-                        </div>
-                        <div className="notification-item">
-                            <strong>Beach cleanup completed:</strong> Marina Beach
-                            <div style={{ color: '#718096', fontSize: '0.9rem' }}>5 hours ago</div>
-                        </div>
-                        <div className="notification-item">
-                            <strong>Impact report submitted:</strong> Q2 2025
-                            <div style={{ color: '#718096', fontSize: '0.9rem' }}>1 day ago</div>
-                        </div>
-                        <div className="notification-item">
-                            <strong>Equipment maintenance:</strong> Scheduled
-                            <div style={{ color: '#718096', fontSize: '0.9rem' }}>2 days ago</div>
-                        </div>
-                        <div className="notification-item">
-                            <strong>New feedback received:</strong> 4.8/5 rating
-                            <div style={{ color: '#718096', fontSize: '0.9rem' }}>3 days ago</div>
-                        </div>
-                    </div>
-                )}
+  <div className="notification-panel relative" id="notification-panel">
+    <button
+      onClick={() => setNotificationsOpen(false)}
+      className="absolute top-2 right-2 text-cyan-700 hover:text-red-600 text-xl font-bold focus:outline-none"
+      aria-label="Close notifications"
+    >
+      &times;
+    </button>
+
+    <h3 className="mb-4 font-semibold text-lg text-cyan-800">Recent Activities</h3>
+
+    <div className="notification-item">
+      <strong>New volunteer registration:</strong> Sarah Johnson
+      <div className="text-sm text-gray-500">2 hours ago</div>
+    </div>
+    <div className="notification-item">
+      <strong>Beach cleanup completed:</strong> Marina Beach
+      <div className="text-sm text-gray-500">5 hours ago</div>
+    </div>
+    <div className="notification-item">
+      <strong>Impact report submitted:</strong> Q2 2025
+      <div className="text-sm text-gray-500">1 day ago</div>
+    </div>
+    <div className="notification-item">
+      <strong>Equipment maintenance:</strong> Scheduled
+      <div className="text-sm text-gray-500">2 days ago</div>
+    </div>
+    <div className="notification-item">
+      <strong>New feedback received:</strong> 4.8/5 rating
+      <div className="text-sm text-gray-500">3 days ago</div>
+    </div>
+  </div>
+)}
+
 
                 <div className="content-area">
                     {/* Dashboard Section */}
@@ -1013,7 +1028,7 @@ const adDashboard = ({ navigateToHome }) => { // Added navigateToHome prop
 
                     {/* Equipment Dashboard Section */}
                     <div id="equipment" className={`content-section ${currentPage === 'equipment' ? 'active' : ''}`}>
-                        <Events />
+                        <Equipment />
                     </div>
                     
 

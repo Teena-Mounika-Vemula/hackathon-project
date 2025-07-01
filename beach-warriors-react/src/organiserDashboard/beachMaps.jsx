@@ -37,12 +37,6 @@ const BeachMaps = () => {
         setActiveBeachId(id);
     };
 
-    // Placeholder for Add New Beach functionality
-    const addNewBeach = () => {
-        console.log('Add New Beach functionality would open a form to add a new beach location with coordinates, details, and initial status.');
-        // In a real application, you'd open a modal or navigate to a new form here.
-    };
-
     return (
         <>
             <style>
@@ -443,9 +437,6 @@ const BeachMaps = () => {
                         <option value="south">South Coast</option>
                         <option value="east">East Coast</option>
                     </select>
-                    <button className="add-beach-btn" onClick={addNewBeach}>
-                        Add New Beach
-                    </button>
                 </div>
 
                 <div className="map-container ocean-card"> {/* Added ocean-card class */}

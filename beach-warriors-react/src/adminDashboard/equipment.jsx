@@ -84,13 +84,8 @@ const Equipment = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-400 to-cyan-600 p-6">
+    <div className="min-h-screen bg-white p-6">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Page Title */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/30">
-          <h1 className="text-4xl font-bold text-black text-center">Equipment Dashboard</h1>
-          <p className="text-gray-800 text-center mt-2">Manage your beach cleanup tools and plan events</p>
-        </div>
 
         {/* Tools Inventory */}
         <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/30">
@@ -102,35 +97,35 @@ const Equipment = () => {
             {toolsConfig.map(({ key, name, icon }) => (
               <div 
                 key={key}
-                className="bg-white rounded-xl p-6 shadow-lg border-2 border-cyan-100 hover:border-cyan-500 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                className="bg-white rounded-xl p-4 shadow-lg border-2 border-cyan-100 hover:border-cyan-500 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
-                <div className="flex items-center gap-4 mb-5">
-                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center text-2xl">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center text-xl">
                     {icon}
                   </div>
-                  <div className="text-xl font-semibold text-black">{name}</div>
+                  <div className="text-lg font-semibold text-black">{name}</div>
                 </div>
                 
-                <div className="flex justify-between items-center mb-5">
+                <div className="flex justify-between items-center mb-4">
                   <span className="text-black font-medium">Available:</span>
-                  <div className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-semibold text-lg">
+                  <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full font-semibold text-base">
                     {tools[key]}
                   </div>
                 </div>
                 
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <input
                     type="number"
                     value={tempInputs[key]}
                     onChange={(e) => handleInputChange(key, e.target.value)}
                     onKeyPress={(e) => handleKeyPress(e, key)}
-                    className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-200 transition-all"
+                    className="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-200 transition-all text-sm"
                     placeholder="Enter quantity"
                     min="0"
                   />
                   <button
                     onClick={() => updateCount(key)}
-                    className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                    className="bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-4 py-2 rounded-lg font-semibold hover:-translate-y-1 hover:shadow-lg transition-all duration-300 text-sm whitespace-nowrap"
                   >
                     Update
                   </button>

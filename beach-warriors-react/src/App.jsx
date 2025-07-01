@@ -41,7 +41,7 @@ const App = () => {
                 return <SignUpPage navigateTo={navigateTo} />;
             case 'adminDashboard':
                 return <AdDashboard navigateTo={navigateTo} />;      
-            case 'dashboard': // This case will render the OrgDashboard
+            case 'orgdashboard': // This case will render the OrgDashboard
                 return <OrgDashboard navigateTo={navigateTo} />;
             case 'events': // This case will render the Events page
                 return <Events navigateTo={navigateTo} />;

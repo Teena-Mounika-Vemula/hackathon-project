@@ -36,7 +36,7 @@ const EventCard = ({ event }) => {
     ];
 
     return (
-        <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative">
+        <div className="bg-white rounded-2xl p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative">
             <EventStatusBadge status={event.status} />
             <h3 className="text-lg font-bold text-slate-800 mb-3 pr-24">{event.title}</h3>
             <div className="space-y-2 text-sm text-slate-600">
@@ -214,7 +214,7 @@ const EventsPage = () => {
 export default function App() {
     return (
         <div className="bg-gradient-to-br from-sky-400 to-indigo-500 min-h-screen font-sans text-slate-800">
-            <div className="flex flex-col lg:flex-row h-screen">
+            <div className="flex flex-col lg:flex-row w-full">
                 <EventsPage />
             </div>
         </div>

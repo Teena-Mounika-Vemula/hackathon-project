@@ -54,6 +54,7 @@ const OrgDashboard = ({ navigateTo, initialActiveTab = 'orgdashboard' }) => {
 
     // State to manage animated heights for the chart bars individually
     const [animatedChartHeights, setAnimatedChartHeights] = useState({});
+    const [showNotifications, setShowNotifications] = useState(false);
 
     // Ref to reference the chart container DOM element (not strictly needed with new animation, but kept for consistency)
     const chartContainerRef = useRef(null);
@@ -163,9 +164,8 @@ const OrgDashboard = ({ navigateTo, initialActiveTab = 'orgdashboard' }) => {
 
     // Handle notification bell click (existing)
     const handleNotificationClick = () => {
-        console.log("Notification bell clicked! Showing latest notifications...");
-        // Implement notification display logic here (e.g., show a modal or dropdown)
-    };
+        setShowNotifications((prev) => !prev); // Toggle the dropdown
+      };      
 
     // Helper for rendering stat cards (existing)
     const renderStatCard = (key, data) => (
@@ -215,16 +215,42 @@ const OrgDashboard = ({ navigateTo, initialActiveTab = 'orgdashboard' }) => {
                                     </svg>
                                 </button>
 
-                                <div className="relative">
-                                    <button className="text-cyan-600 hover:text-cyan-800 transition-colors p-2 rounded-full hover:bg-cyan-100" onClick={handleNotificationClick}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                                        </svg>
-                                    </button>
+                                <button
+                                className="relative text-cyan-600 hover:text-cyan-800 transition-colors p-2 rounded-full hover:bg-cyan-100"
+                                onClick={handleNotificationClick}
+                                >
+                                    {showNotifications && (
+  <div className="absolute right-0 mt-2 w-64 bg-white border border-cyan-100 rounded-md shadow-lg z-50">
+    <div className="relative p-4 text-sm text-gray-700">
+      {/* Close Button in top-right */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowNotifications(false);
+        }}
+        className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-lg font-bold leading-none focus:outline-none"
+        aria-label="Close notifications"
+      >
+        &times;
+      </button>
+
+      <p className="font-semibold text-cyan-800 mb-2">Notifications</p>
+      <ul className="space-y-2">
+        <li className="text-gray-600">🧹 Beach Cleanup scheduled for 5th July</li>
+        <li className="text-gray-600">👥 12 new volunteers joined</li>
+        <li className="text-gray-600">📦 Waste data submitted for review</li>
+      </ul>
+    </div>
+  </div>
+)}
+                                    <span role="img" aria-label="notifications" className="text-2xl">
+                                        🔔
+                                    </span>
                                     <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center border-2 border-white">
-                                        3
+                                         3
                                     </div>
-                                </div>
+                                </button>
+
                             </div>
                         </div>
 
@@ -710,15 +736,20 @@ const OrgDashboard = ({ navigateTo, initialActiveTab = 'orgdashboard' }) => {
                                     onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/40x40/cccccc/000000?text=User" }}
                                 />
                                 <div>
-                                    <p className="text-sm font-medium text-cyan-900">Marina Costa</p>
-                                    <p className="text-xs text-gray-600">Program Director</p>
+                                    <p className="text-sm font-medium text-cyan-900">Anjali Verma</p>
+                                    <p className="text-xs text-gray-600">Beach Cleanup Organizer</p>
                                 </div>
                             </div>
                         </div> 
 
                         <div className="mt-auto mb-3">
                             <button
-                            onClick={() => navigateTo('home')}
+                            onClick={() => {
+                                const confirmLogout = window.confirm("Are you sure you want to log out?");
+                                if (confirmLogout) {
+                                  navigateTo('home');
+                                }
+                              }}                              
                             className="w-full flex items-center justify-center px-3 py-1.5 text-xs font-medium text-cyan-600 bg-white border border-cyan-500 rounded-[10px] hover:bg-cyan-50 transition-all duration-200"
                             >
                             <svg

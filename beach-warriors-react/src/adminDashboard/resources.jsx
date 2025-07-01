@@ -170,7 +170,7 @@ const AddResourcesPage = () => {
 
             {/* Main content area */}
             <main className="p-4 md:p-5">
-                <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+                <div className="bg-white p-6 md:p-8 rounded-2xl">
                     <h2 className="text-3xl font-bold text-slate-800 mb-2">Add New Learning Resource</h2>
                     <p className="text-slate-500 mb-8">Create educational content to help volunteers learn about environmental conservation.</p>
 
@@ -246,7 +246,7 @@ const AddResourcesPage = () => {
 export default function App() {
     return (
         <div className="bg-gradient-to-br from-cyan-600 to-cyan-800 min-h-screen font-sans text-slate-800">
-            <div className="flex flex-col lg:flex-row h-screen">
+            <div className="flex flex-col lg:flex-row w-full">
                 <AddResourcesPage />
             </div>
         </div>

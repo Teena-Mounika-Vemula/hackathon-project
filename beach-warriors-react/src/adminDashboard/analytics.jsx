@@ -13,9 +13,7 @@ const adDashboard = () => {
 // Main Content Area Component
 const MainContent = () => {
     return (
-        <div className="flex-1 p-0 overflow-y-auto bg-gray-100">
             <ContentArea />
-        </div>
     );
 };
 
@@ -23,17 +21,17 @@ const MainContent = () => {
 // Content Area Component (holds charts)
 const ContentArea = () => {
     return (
-        <div className="bg-white mx-5 mb-5 rounded-2xl p-8 shadow-md">
+        <div className="mx-auto my-8 max-w-7xl px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <ChartContainer
                     chartId="volunteerChart"
                     title="Volunteer Engagement Over Time"
                     type="line"
                     data={{
-                        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                        labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
                         datasets: [{
                             label: 'Active Volunteers',
-                            data: [980, 1050, 1120, 1180, 1210, 1247],
+                            data: [980, 1050, 1120, 1180, 1210, 1247, 1200, 1090, 1150, 1190, 1220, 1250],
                             borderColor: '#00BCD4',
                             backgroundColor: 'rgba(0, 188, 212, 0.1)',
                             fill: true,

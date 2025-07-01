@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MessageCircle } from 'lucide-react';
 
 const ChatbotWidget = () => {
@@ -7,6 +7,25 @@ const ChatbotWidget = () => {
   const [messages, setMessages] = useState([
     { role: 'assistant', content: 'Hello! How can I assist you today?' }
   ]);
+
+  const chatbotRef = useRef(null); // Create ref
+
+  // 👇 Detect outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (chatbotRef.current && !chatbotRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [open]);
 
   const sendMessage = async () => {
     if (!userInput.trim()) return;
@@ -38,7 +57,10 @@ const ChatbotWidget = () => {
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {open && (
-        <div className="w-80 h-96 bg-[#FFF8E1] rounded-2xl shadow-2xl p-4 flex flex-col border border-[#F4511E]">
+        <div
+          ref={chatbotRef}  // 👈 Attach ref here
+          className="w-80 h-96 bg-[#FFF8E1] rounded-2xl shadow-2xl p-4 flex flex-col border border-[#F4511E]"
+        >
           <div className="flex justify-between items-center mb-2">
             <h2 className="text-lg font-semibold text-[#FF7043]">BeachBot 🤖</h2>
             <button
@@ -62,16 +84,34 @@ const ChatbotWidget = () => {
               </div>
             ))}
           </div>
-          <div className="mt-2">
-            <input
-              type="text"
-              placeholder="Type your message..."
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-              className="w-full border border-[#F4511E] rounded px-2 py-1 text-[#4E342E]"
-            />
-          </div>
+
+          <div className="mt-2 flex items-center space-x-2">
+          <input
+  type="text"
+  placeholder="Type your message..."
+  value={userInput}
+  onChange={(e) => setUserInput(e.target.value)}
+  onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+  className="flex-1 bg-white border border-orange-300 rounded-full px-5 py-2 text-[#333] shadow-inner focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
+/>
+
+<button
+  onClick={sendMessage}
+  className="p-3 bg-gradient-to-br from-orange-500 via-rose-500 to-red-500 text-white rounded-full shadow-[0_4px_14px_rgba(255,80,80,0.4)] hover:shadow-[0_6px_24px_rgba(255,50,50,0.6)] transition-all duration-300 ease-in-out transform hover:scale-110 active:scale-95 focus:outline-none"
+  aria-label="Send message"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+  >
+    <path d="M2 21l21-9L2 3v7l15 2-15 2z" />
+  </svg>
+</button>
+
+</div>
+
         </div>
       )}
 
