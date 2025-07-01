@@ -10,7 +10,7 @@ const Sidebar = ({ activeNavItem, handleNavItemClick }) => {
     { key: 'voldashboard', icon: '🏠', label: 'Impact Dashboard' },
     { key: 'avatar-badges', icon: '👤', label: 'Avatar & Badges' },
     { key: 'cleanup-events', icon: '📅', label: 'Cleanup Events' },
-    { key: 'waste-classification', icon: '♻️', label: 'Waste Classification' },
+    { key: 'waste-classifier', icon: '♻️', label: 'Waste Classification' },
     { key: 'eduhub', icon: '👨‍🎓', label: 'Education Hub' },
     { key: 'impactcam', icon: '📸', label: 'Impact Cam' },
     { key: 'logout', icon: '🚪', label: 'Logout' },

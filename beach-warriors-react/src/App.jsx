@@ -9,6 +9,8 @@ import VolDashboard from './volunteerDashboard/volDashboard.jsx'; // adjust the 
 import AvatarRewards from './volunteerDashboard/avatarBadges.jsx'; 
 import EducationHub from './volunteerDashboard/volEduHub.jsx'; 
 import ImpactCam from './volunteerDashboard/impactCam.jsx';
+import EventDashboard from './volunteerDashboard/cleanupEvents.jsx';
+import WasteClassifier from './volunteerDashboard/wasteClassifier.jsx';
 
 const App = () => {
     // currentPage will track the main page ('home', 'login', 'signup', 'dashboard', 'events')
@@ -44,10 +46,14 @@ const App = () => {
                 return < VolDashboard navigateTo={navigateTo} />;
             case 'avatar-badges': 
                 return <AvatarRewards navigateTo={navigateTo} activeNavItem={currentPage} />
-            case 'eduhub': // This case will render the Volunteer Avatar page
+            case 'eduhub':
                 return <EducationHub navigateTo={navigateTo} activeNavItem={currentPage} />
-            case 'impactcam': // This case will render the Volunteer Avatar page
+            case 'impactcam':
                 return <ImpactCam navigateTo={navigateTo} activeNavItem={currentPage} />
+            case 'cleanup-events':
+                return <EventDashboard navigateTo={navigateTo} activeNavItem={currentPage} />
+             case 'waste-classifier':
+                return <WasteClassifier navigateTo={navigateTo} activeNavItem={currentPage} />
             // 'about' and 'articles' cases are no longer separate pages, they'll be sections on 'home'
             // default will also render HomePage
             default:

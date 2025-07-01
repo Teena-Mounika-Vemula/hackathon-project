@@ -3,7 +3,7 @@ import Sidebar from './Sidebar'; // adjust the path if Sidebar is located elsewh
 import { Camera, Download, Share2, Sparkles, MapPin, Calendar, RefreshCw, Check, X, Heart, Leaf, Waves, Sun, Target, Zap, Trophy, Star } from 'lucide-react';
 
 const ImpactCam = () => {
-  const [activeNavItem, setActiveNavItem] = useState('impact-cam');
+  const [activeNavItem, setActiveNavItem] = useState('impactcam');
   const [capturedImage, setCapturedImage] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState('none');
   const [isCapturing, setIsCapturing] = useState(false);
