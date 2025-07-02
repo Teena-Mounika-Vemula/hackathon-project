@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import Sidebar from './Sidebar'; // adjust the path if Sidebar is located elsewhere
 import { Camera, Download, Share2, Sparkles, MapPin, Calendar, RefreshCw, Check, X, Heart, Leaf, Waves, Sun, Target, Zap, Trophy, Star } from 'lucide-react';
 
-const ImpactCam = () => {
-  const [activeNavItem, setActiveNavItem] = useState('impactcam');
+const ImpactCam = ({ navigateTo }) => {  // ✅ Accept navigateTo as prop
+  const [activeNavItem, setActiveNavItem] = useState('impactcam'); // ✅ Keep consistent naming
   const [capturedImage, setCapturedImage] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState('none');
   const [isCapturing, setIsCapturing] = useState(false);
@@ -17,9 +17,10 @@ const ImpactCam = () => {
 
   const handleNavItemClick = (item) => {
     setActiveNavItem(item);
-    navigateTo(item);
+    if (navigateTo) {  // ✅ Check if navigateTo exists before calling
+      navigateTo(item);
+    }
   };
-
 
   const filters = [
     { id: 'none', name: 'Original', icon: '📷', badge: 'Classic' },
@@ -97,7 +98,8 @@ const ImpactCam = () => {
   };
 
   const renderContent = () => {
-    if (activeNavItem === 'impact-cam') {
+    // ✅ Fixed: Check for 'impactcam' instead of 'impact-cam'
+    if (activeNavItem === 'impactcam') {
       return (
         <div className="space-y-6">
           {/* Mission Alert */}
@@ -359,53 +361,52 @@ const ImpactCam = () => {
     <div className="min-h-screen bg-slate-900 flex">
       {/* Sidebar */}
       <Sidebar activeNavItem={activeNavItem} handleNavItemClick={handleNavItemClick} />
-<div className="pl-[280px] p-8">
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="p-8">
-          { activeNavItem === 'impact-cam' && (
-            <div className="mb-8">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent mb-2">
-                Impact Cam & AI Caption Studio
-              </h1>
-              <p className="text-gray-400">Transform your cleanup moments into viral environmental stories!</p>
-            </div>
-          )}
-          
-          {renderContent()}
-        </div>
-      </div>
-
-      {/* Success Modal */}
-      {showSuccess && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-slate-800 border border-slate-600 rounded-xl p-8 max-w-md mx-4 text-center">
-            <div className="bg-green-500 bg-opacity-20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Trophy className="w-10 h-10 text-green-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-2">VICTORY SHARED! 🎉</h3>
-            <p className="text-gray-300 mb-4">Your environmental battle story is now inspiring warriors across the digital realm!</p>
-            <div className="bg-slate-700 rounded-lg p-4 mb-4">
-              <div className="flex items-center justify-center space-x-6 text-sm">
-                <span className="flex items-center text-red-400">
-                  <Heart className="w-4 h-4 mr-1 fill-current" />
-                  +127 likes
-                </span>
-                <span className="flex items-center text-blue-400">
-                  <Share2 className="w-4 h-4 mr-1" />
-                  +23 shares
-                </span>
-                <span className="flex items-center text-green-400">
-                  <Zap className="w-4 h-4 mr-1" />
-                  +25 XP
-                </span>
+      <div className="pl-[280px] p-8">
+        {/* Main Content */}
+        <div className="flex-1 overflow-auto">
+          <div className="p-8">
+            { activeNavItem === 'impactcam' && (  /* ✅ Fixed: Check for 'impactcam' */
+              <div className="mb-8">
+                <h1 className="text-4xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent mb-2">
+                  Impact Cam & AI Caption Studio
+                </h1>
+                <p className="text-gray-400">Transform your cleanup moments into viral environmental stories!</p>
               </div>
-            </div>
-            <div className="text-yellow-400 font-bold">🏆 Achievement Unlocked: Social Impact Master!</div>
+            )}
+            
+            {renderContent()}
           </div>
         </div>
-        
-      )}
+
+        {/* Success Modal */}
+        {showSuccess && (
+          <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+            <div className="bg-slate-800 border border-slate-600 rounded-xl p-8 max-w-md mx-4 text-center">
+              <div className="bg-green-500 bg-opacity-20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Trophy className="w-10 h-10 text-green-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">VICTORY SHARED! 🎉</h3>
+              <p className="text-gray-300 mb-4">Your environmental battle story is now inspiring warriors across the digital realm!</p>
+              <div className="bg-slate-700 rounded-lg p-4 mb-4">
+                <div className="flex items-center justify-center space-x-6 text-sm">
+                  <span className="flex items-center text-red-400">
+                    <Heart className="w-4 h-4 mr-1 fill-current" />
+                    +127 likes
+                  </span>
+                  <span className="flex items-center text-blue-400">
+                    <Share2 className="w-4 h-4 mr-1" />
+                    +23 shares
+                  </span>
+                  <span className="flex items-center text-green-400">
+                    <Zap className="w-4 h-4 mr-1" />
+                    +25 XP
+                  </span>
+                </div>
+              </div>
+              <div className="text-yellow-400 font-bold">🏆 Achievement Unlocked: Social Impact Master!</div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

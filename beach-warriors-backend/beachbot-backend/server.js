@@ -14,9 +14,21 @@ You are BeachBot, an expert assistant for the Beach Warriors app. You ONLY answe
 – Volunteer signup, events, attendance
 – Dashboard features, avatars, badges, points
 – Organiser tools, maps, AI tools (waste classifier, reminders)
-Always respond briefly and to the point.
-If asked something unrelated, say: "I'm here to help with Beach Warriors–related topics only."
+
+After every response, suggest 2 to 3 **helpful next user messages** (short phrases). Respond in this JSON format:
+
+{
+  "reply": "main reply text",
+  "suggestions": ["suggestion 1", "suggestion 2", "suggestion 3"]
+}
+
+If asked something unrelated, respond with:
+{
+  "reply": "I'm here to help with Beach Warriors–related topics only.",
+  "suggestions": ["Start Over", "Show Beach Features", "Help"]
+}
 `;
+
 
 app.post('/chat', async (req, res) => {
   const userMessage = req.body.message;
@@ -32,6 +44,7 @@ app.post('/chat', async (req, res) => {
   };
 
   try {
+    console.log("🔑 API Key loaded:", process.env.GROQ_API_KEY);
     const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: 'POST',
       headers: {
@@ -49,8 +62,21 @@ app.post('/chat', async (req, res) => {
       return res.status(500).json({ reply: "🤖 Groq didn't send a valid message." });
     }
 
-    const reply = data.choices[0].message.content;
-    res.json({ reply });
+    const modelReply = data.choices[0].message.content;
+
+     try {  
+          const parsed = JSON.parse(modelReply);
+          res.json({
+            reply: parsed.reply,
+          suggestions: parsed.suggestions || [],
+          });
+    } catch (parseErr) {
+          console.warn("❌ Couldn't parse JSON from model, fallback to plain text.");
+          res.json({
+          reply: modelReply,
+          suggestions: [],
+          });
+    }
 
   } catch (err) {
     console.error("❌ Groq API error:", err);
