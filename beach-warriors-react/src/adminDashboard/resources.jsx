@@ -111,6 +111,8 @@ const CATEGORIES = [
 
 // --- Main Page Component ---
 const AddResourcesPage = () => {
+    const [resources, setResources] = useState([]);
+
     const [formData, setFormData] = useState({
         title: '',
         type: '',
@@ -146,24 +148,39 @@ const AddResourcesPage = () => {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        setShowSuccess(false);
+    e.preventDefault();
+    setIsSubmitting(true);
+    setShowSuccess(false);
 
-        // Simulate API call
-        setTimeout(() => {
-            setIsSubmitting(false);
-            setShowSuccess(true);
-            console.log("Form Submitted:", { ...formData, categories: selectedCategories, file: selectedFile?.name });
-            
-            // Auto-hide success message after 5 seconds
-            setTimeout(() => setShowSuccess(false), 5000);
-            
-            // Optional: scroll to top to see message
-            document.querySelector('.main-content-area')?.scrollTo({ top: 0, behavior: 'smooth' });
-            
-        }, 2000);
-    };
+    // Simulate API call
+    setTimeout(() => {
+        setIsSubmitting(false);
+        setShowSuccess(true);
+
+        // Add the new resource to the list
+        setResources(prev => [
+            ...prev,
+            {
+                ...formData,
+                categories: selectedCategories,
+                file: selectedFile,
+                id: Date.now()
+            }
+        ]);
+
+        // Auto-hide success message after 5 seconds
+        setTimeout(() => setShowSuccess(false), 5000);
+
+        // Optional: scroll to top to see message
+        document.querySelector('.main-content-area')?.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Reset form fields
+        setFormData({ title: '', type: '', description: '', audience: '' });
+        setSelectedCategories([]);
+        setSelectedFile(null);
+    }, 2000);
+};
+
 
     return (
         <div className="flex-1 bg-slate-100 overflow-y-auto main-content-area">
@@ -171,7 +188,7 @@ const AddResourcesPage = () => {
             {/* Main content area */}
             <main className="p-4 md:p-5">
                 <div className="bg-white p-6 md:p-8 rounded-2xl">
-                    <h2 className="text-3xl font-bold text-slate-800 mb-2">Add New Learning Resource</h2>
+                    <h2 className="text-3xl font-bold text-slate-800 mb-2">Add Learning Resources</h2>
                     <p className="text-slate-500 mb-8">Create educational content to help volunteers learn about environmental conservation.</p>
 
                     {showSuccess && (
@@ -236,6 +253,33 @@ const AddResourcesPage = () => {
                             </button>
                         </div>
                     </form>
+                    {resources.length > 0 && (
+  <div className="mt-10">
+    <h3 className="text-xl font-bold mb-4">Added Resources</h3>
+    <ul className="space-y-4">
+      {resources.map(resource => (
+        <li key={resource.id} className="bg-white rounded-xl p-4 shadow flex flex-col md:flex-row md:items-center md:justify-between">
+          <div>
+            <div className="font-semibold text-lg">{resource.title}</div>
+            <div className="text-slate-500 text-sm">{resource.type} &middot; {resource.audience}</div>
+            <div className="text-slate-600 mt-1">{resource.description}</div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {resource.categories.map(cat => (
+                <span key={cat} className="bg-cyan-100 text-cyan-700 px-2 py-1 rounded text-xs">{cat}</span>
+              ))}
+            </div>
+          </div>
+          {resource.file && (
+            <div className="mt-4 md:mt-0 md:ml-6 text-slate-500 text-sm">
+              <span className="font-medium">File:</span> {resource.file.name}
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
                 </div>
             </main>
         </div>

@@ -43,10 +43,37 @@ const TypeBadge = ({ type }) => {
 
 // --- Main Page Component ---
 const ReportsPage = () => {
+    const [activeReport, setActiveReport] = useState(null);
+const [isEditMode, setIsEditMode] = useState(false);
+const [showModal, setShowModal] = useState(false);
+
+
     const [reports, setReports] = useState(initialReportsData);
     const [selectedReportIds, setSelectedReportIds] = useState([]);
     const [filters, setFilters] = useState({ type: '', status: '' });
     const [sortBy, setSortBy] = useState('date-desc');
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [formMode, setFormMode] = useState('view'); // 'view' or 'edit'
+    const [currentReport, setCurrentReport] = useState(null);
+
+    const [formData, setFormData] = useState({
+  title: '',
+  date: '',
+  type: '',
+  status: '',
+  content: '',
+});
+
+const handleView = (report) => {
+    setActiveReport(report);
+    setFormData({
+      title: report.title,
+      date: report.date,
+      content: report.content,
+    });
+    setIsEditMode(false);
+    setShowModal(true);
+  };
 
     const handleFilterChange = (e) => {
         setFilters(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -69,6 +96,23 @@ const ReportsPage = () => {
                 }
             });
     }, [reports, filters, sortBy]);
+
+    const handleSave = (status) => {
+  const updatedReport = {
+    ...activeReport,
+    ...formData,
+    status,
+  };
+
+  const updatedReports = reports.map((report) =>
+    report.id === updatedReport.id ? updatedReport : report
+  );
+
+  setReports(updatedReports);
+  setShowModal(false);
+  setActiveReport(null);
+};
+
 
     const handleSelect = (reportId) => {
         setSelectedReportIds(prev =>
@@ -172,17 +216,128 @@ const ReportsPage = () => {
                                 <td className="p-4"><TypeBadge type={report.type} /></td>
                                 <td className="p-4"><StatusBadge status={report.status} /></td>
                                 <td className="p-4">
-                                    {report.status === 'published' ? (
-                                        <button className="bg-sky-500 text-white text-xs font-bold px-3 py-1.5 rounded-md hover:bg-sky-600">View</button>
-                                    ) : (
-                                        <button className="bg-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-md hover:bg-amber-600">Edit</button>
-                                    )}
-                                </td>
+    <td className="py-2 px-4 border-b">
+  {report.status === 'published' ? (
+    <button
+      className="bg-sky-500 text-white text-xs font-bold px-3 py-1.5 rounded-md hover:bg-sky-600"
+      onClick={() => handleView(report)}
+    >
+      View
+    </button>
+  ) : (
+    <button
+      className="bg-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-md hover:bg-amber-600"
+       onClick={() => {
+    setActiveReport(report);
+    setIsEditMode(true);
+    setShowModal(true);
+    setFormData({
+      title: report.title,
+      date: report.date,
+      type: report.type,
+      status: report.status,
+      content: report.content,
+    });
+  }}
+  variant="outline"
+>
+      Edit
+    </button>
+  )}
+</td>
+
+</td>
+
                             </tr>
                         ))}
+                       
+
                     </tbody>
                 </table>
+
+
             </div>
+            {showModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="bg-white rounded-xl shadow-xl p-6 w-[90%] max-w-lg relative">
+      <h2 className="text-xl font-bold mb-4">{isEditMode ? 'Edit Report' : 'Report Details'}</h2>
+      
+      <div className="mb-4">
+        <label className="block font-medium">Title:</label>
+        {isEditMode ? (
+          <input
+            type="text"
+            value={formData.title}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            className="w-full border border-slate-300 rounded-lg p-2"
+          />
+        ) : (
+          <p>{formData.title}</p>
+        )}
+      </div>
+
+      <div className="mb-4">
+        <label className="block font-medium">Date:</label>
+        {isEditMode ? (
+          <input
+            type="date"
+            value={formData.date}
+            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            className="w-full border border-slate-300 rounded-lg p-2"
+          />
+        ) : (
+          <p>{formData.date}</p>
+        )}
+      </div>
+
+      <div className="mb-4">
+        <label className="block font-medium">Content:</label>
+        {isEditMode ? (
+          <textarea
+            value={formData.content}
+            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+            className="w-full border border-slate-300 rounded-lg p-2"
+          />
+        ) : (
+          <p>{formData.content || 'No content available.'}</p>
+        )}
+      </div>
+
+      <div className="flex justify-end gap-2 mt-6">
+        <button
+          onClick={() => setShowModal(false)}
+          className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
+        >
+          Close
+        </button>
+        {isEditMode ? (
+          <>
+            <button
+              onClick={() => handleSave('draft')}
+              className="bg-yellow-400 text-white px-4 py-2 rounded-lg hover:bg-yellow-500"
+            >
+              Save as Draft
+            </button>
+            <button
+              onClick={() => handleSave('published')}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+            >
+              Publish
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={() => setIsEditMode(true)}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            Edit
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
+)}
+
         </div>
     );
 };

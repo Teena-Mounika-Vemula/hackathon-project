@@ -358,7 +358,7 @@ const adDashboard = ({ navigateToHome }) => { // Added navigateToHome prop
                         background: #00BCD4; /* Keep sidebar blue */
                         position: fixed;
                         height: 100vh;
-                        overflow-y: hidden; /* Prevent vertical scrolling */
+                        overflow-y: auto;  /* Prevent vertical scrolling */
                         overflow-x: hidden; /* Prevent horizontal scrolling */
                         transition: all 0.3s ease;
                         display: flex;
@@ -863,7 +863,7 @@ const adDashboard = ({ navigateToHome }) => { // Added navigateToHome prop
                     <a href="#" className={`nav-item ${currentPage === 'analytics' ? 'active' : ''}`} onClick={() => showSection('analytics', 'Analytics')}>Analytics</a>
                     <a href="#" className={`nav-item ${currentPage === 'volunteers' ? 'active' : ''}`} onClick={() => showSection('volunteers', 'Volunteers & Organizers')}>All Volunteers & Organizers</a>
                     <a href="#" className={`nav-item ${currentPage === 'weather' ? 'active' : ''}`} onClick={() => showSection('weather', 'Smart Weather Forecast')}>Smart Weather Forecast</a>
-                    <a href="#" className={`nav-item ${currentPage === 'resources' ? 'active' : ''}`} onClick={() => showSection('resources', 'Add Learning Resources')}>Add Learning Resources</a>
+                    <a href="#" className={`nav-item ${currentPage === 'resources' ? 'active' : ''}`} onClick={() => showSection('resources', 'Learning Resources')}>Learning Resources</a>
                     <a href="#" className={`nav-item ${currentPage === 'reports' ? 'active' : ''}`} onClick={() => showSection('reports', 'Impact Reports')}>All Impact Reports</a>
                     <a href="#" className={`nav-item ${currentPage === 'events' ? 'active' : ''}`} onClick={() => showSection('events', 'Events')}>Events</a>
                     <a href="#" className={`nav-item ${currentPage === 'equipment' ? 'active' : ''}`} onClick={() => showSection('equipment', 'Equipment Dashboard')}>Equipment Dashboard</a>
