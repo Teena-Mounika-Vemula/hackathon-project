@@ -5,7 +5,16 @@ require('dotenv').config();
 console.log("🔑 API Key loaded:", process.env.GROQ_API_KEY);
 
 const app = express();
-app.use(cors());
+const allowedOrigins = [
+  "https://hackathon-project-frontend.onrender.com", // your frontend
+  "http://localhost:3000" // for local dev, optional
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ["GET", "POST"],
+  credentials: false
+}));
 app.use(express.json());
 
 const systemPrompt = `
@@ -88,4 +97,7 @@ app.post('/chat', async (req, res) => {
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`✅ BeachBot (Groq) running at http://localhost:${PORT}`);
+});
+app.get("/", (req, res) => {
+  res.send("🌊 BeachBot backend is running");
 });
