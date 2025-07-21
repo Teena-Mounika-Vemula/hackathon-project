@@ -35,7 +35,7 @@ const ChatbotWidget = () => {
     setMessages(prev => [...prev, newUserMessage]);
 
     try {
-      const res = await fetch('http://localhost:4000/chat', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: input }),
