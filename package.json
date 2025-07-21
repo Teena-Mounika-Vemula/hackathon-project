@@ -1,13 +1,20 @@
 {
-  "name": "beach-warriors-project",
+  "name": "beach-warriors",
   "version": "1.0.0",
-  "scripts": {
-    "dev": "concurrently \"cd beach-warriors-react && npm run dev\" \"cd beach-warriors-backend/beachbot-backend && node server.js\""
+  "main": "index.js",
+  "bin": {
+    "beach-warriors": "./index.js"
   },
+  "scripts": {
+  "dev": "concurrently \"npm run frontend\" \"npm run backend\"",
+  "frontend": "cd beach-warriors-react && npm run dev",
+  "backend": "cd beach-warriors-backend/beachbot-backend && node server.js"
+},
   "devDependencies": {
     "concurrently": "^9.2.0"
   },
   "dependencies": {
-    "dotenv": "^17.0.0"
+    "dotenv": "^17.0.0",
+    "fs-extra": "^11.3.0"
   }
 }

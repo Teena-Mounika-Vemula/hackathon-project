@@ -12,6 +12,7 @@ import ImpactCam from './volunteerDashboard/impactCam.jsx';
 import EventDashboard from './volunteerDashboard/cleanupEvents.jsx';
 import WasteClassifier from './volunteerDashboard/wasteClassifier.jsx';
 import AdDashboard from './adminDashboard/adDashboard.jsx'; // adjust path as needed
+import NewVolDashboard from './NewVolunteerDashboard/newVolunteerDashboard.jsx'
 
 const App = () => {
     // currentPage will track the main page ('home', 'login', 'signup', 'dashboard', 'events')
@@ -47,6 +48,8 @@ const App = () => {
                 return <Events navigateTo={navigateTo} />;
             case 'voldashboard': // This case will render the Volunteer Dashboard page
                 return < VolDashboard navigateTo={navigateTo} />;
+            case 'newvoldashboard':
+                return < NewVolDashboard navigateTo={navigateTo} />;
             case 'avatar-badges': 
                 return <AvatarRewards navigateTo={navigateTo} activeNavItem={currentPage} />
             case 'eduhub':

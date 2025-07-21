@@ -15,6 +15,17 @@ const RefreshIcon = ({ className }) => (
 
 const CheckIcon = () => <span>✓</span>;
 
+const UserIcon = () => (
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+    </svg>
+);
+
+const MessageIcon = () => (
+    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+    </svg>
+);
 
 // Weather Data Card Component
 const WeatherCard = ({ icon, label, value, color }) => (
@@ -34,6 +45,75 @@ const ForecastItem = ({ time, temp, condition }) => (
     </div>
 );
 
+// Volunteer Dashboard Component
+const VolunteerDashboard = ({ alerts, volunteers }) => {
+    return (
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-md mb-6">
+            <h3 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <UserIcon />
+                Volunteer Dashboard
+            </h3>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Volunteer List */}
+                <div>
+                    <h4 className="text-lg font-semibold text-slate-800 mb-3">Active Volunteers ({volunteers.length})</h4>
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                        {volunteers.map((volunteer, index) => (
+                            <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 bg-cyan-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                        {volunteer.name.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <div className="font-semibold text-slate-800">{volunteer.name}</div>
+                                        <div className="text-xs text-slate-500">{volunteer.role}</div>
+                                    </div>
+                                </div>
+                                <div className={`w-3 h-3 rounded-full ${volunteer.status === 'online' ? 'bg-green-500' : 'bg-slate-300'}`}></div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Alert Messages */}
+                <div>
+                    <h4 className="text-lg font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                        <MessageIcon />
+                        Recent Alerts ({alerts.length})
+                    </h4>
+                    <div className="space-y-3 max-h-48 overflow-y-auto">
+                        {alerts.length === 0 ? (
+                            <div className="text-center py-8 text-slate-500">
+                                <MessageIcon />
+                                <p className="mt-2">No alerts sent yet</p>
+                            </div>
+                        ) : (
+                            alerts.map((alert, index) => (
+                                <div key={index} className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <div className="flex items-start justify-between mb-2">
+                                        <div className="font-semibold text-blue-800">{alert.type}</div>
+                                        <div className="text-xs text-blue-600">{alert.timestamp}</div>
+                                    </div>
+                                    <div className="text-sm text-blue-700 mb-2">{alert.message}</div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                                            Sent to {alert.recipients} volunteers
+                                        </div>
+                                        <div className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                                            ✓ Delivered
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 // Main Content Component
 const MainContent = () => {
     const [weatherData, setWeatherData] = useState({
@@ -45,6 +125,18 @@ const MainContent = () => {
     const [lastUpdated, setLastUpdated] = useState(new Date());
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [showNotification, setShowNotification] = useState(false);
+    const [notificationMessage, setNotificationMessage] = useState('');
+    const [alerts, setAlerts] = useState([]);
+    const [volunteers] = useState([
+        { name: 'Sarah Johnson', role: 'Team Leader', status: 'online' },
+        { name: 'Mike Chen', role: 'Safety Officer', status: 'online' },
+        { name: 'Emma Davis', role: 'Volunteer', status: 'online' },
+        { name: 'Alex Rodriguez', role: 'Volunteer', status: 'online' },
+        { name: 'Lisa Wong', role: 'Coordinator', status: 'online' },
+        { name: 'David Kim', role: 'Volunteer', status: 'offline' },
+        { name: 'Rachel Brown', role: 'Volunteer', status: 'online' },
+        { name: 'Tom Wilson', role: 'Volunteer', status: 'online' }
+    ]);
 
     // Effect for real-time temperature fluctuation simulation
     useEffect(() => {
@@ -69,14 +161,31 @@ const MainContent = () => {
             });
             setLastUpdated(new Date());
             setIsRefreshing(false);
+            setNotificationMessage('Weather data updated successfully');
             setShowNotification(true);
             setTimeout(() => setShowNotification(false), 3000);
         }, 1500);
     };
 
+    const sendAlertToVolunteers = () => {
+        const newAlert = {
+            type: 'Weather Update',
+            message: `Current conditions: ${weatherData.temperature}°C, ${weatherData.humidity}% humidity, ${weatherData.wind} km/h wind. Event proceeding as planned. Please check in at the registration desk.`,
+            timestamp: new Date().toLocaleTimeString('en-GB', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            }),
+            recipients: volunteers.filter(v => v.status === 'online').length
+        };
+
+        setAlerts(prevAlerts => [newAlert, ...prevAlerts]);
+        setNotificationMessage(`Alert sent to ${newAlert.recipients} volunteers`);
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
+    };
+
     return (
         <div className="flex-1 bg-slate-100">
-
             {/* Main content area */}
             <main className="bg-white m-4 md:m-5 mt-0 p-6 md:p-8 rounded-2xl min-h-[calc(100vh-120px)]">
                 {/* Weather Header */}
@@ -101,6 +210,9 @@ const MainContent = () => {
                     <WeatherCard icon="💨" label="Wind Speed" value={`${weatherData.wind} km/h`} color="bg-gradient-to-br from-violet-500 to-violet-700" />
                     <WeatherCard icon="👁️" label="Visibility" value={`${weatherData.visibility} km`} color="bg-gradient-to-br from-amber-500 to-amber-700" />
                 </div>
+
+                {/* Volunteer Dashboard */}
+                <VolunteerDashboard alerts={alerts} volunteers={volunteers} />
 
                 {/* Event Section */}
                 <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-md">
@@ -134,16 +246,22 @@ const MainContent = () => {
                     </div>
 
                     <div className="flex flex-wrap gap-3">
-                        <button className="px-5 py-2.5 rounded-lg font-semibold bg-cyan-600 text-white hover:bg-cyan-700 transition-all">Send Alert to Volunteers</button>
+                        <button 
+                            onClick={sendAlertToVolunteers}
+                            className="px-5 py-2.5 rounded-lg font-semibold bg-cyan-600 text-white hover:bg-cyan-700 transition-all flex items-center gap-2"
+                        >
+                            <BellIcon />
+                            Send Alert to Volunteers
+                        </button>
                         <button className="px-5 py-2.5 rounded-lg font-semibold bg-slate-600 text-white hover:bg-slate-700 transition-all">Update Event Details</button>
                         <button className="px-5 py-2.5 rounded-lg font-semibold bg-white text-slate-600 border border-slate-300 hover:bg-slate-50 transition-all">View Detailed Report</button>
                     </div>
                 </div>
             </main>
 
-            {/* Refresh Notification */}
+            {/* Notification */}
             <div className={`fixed top-5 right-5 bg-emerald-500 text-white px-6 py-3 rounded-lg shadow-xl transition-transform duration-300 ease-in-out ${showNotification ? 'translate-x-0' : 'translate-x-[400px]'}`}>
-                Weather data updated successfully
+                {notificationMessage}
             </div>
         </div>
     );

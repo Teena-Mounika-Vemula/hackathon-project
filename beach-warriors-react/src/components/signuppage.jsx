@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react"; // Removed useEffect import as direct onClick is used for menu toggle
+import React, { useState, useEffect } from "react";
 import * as faceapi from "face-api.js";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseConfig'; // adjust the path if needed
-
 
 const SignUpPage = ({ navigateTo }) => {
   // State for managing the current step in the multi-step form
@@ -244,7 +243,7 @@ const SignUpPage = ({ navigateTo }) => {
         cameraScan.style.animation = "scan 2s linear infinite";
       }
     }
-  }, [currentStep, stepsContent.length, stepsContent]); // Added stepsContent to dependency array
+  }, [currentStep, stepsContent]); // Added stepsContent to dependency array
 
   useEffect(() => {
     const startCamera = async () => {
@@ -827,7 +826,7 @@ const SignUpPage = ({ navigateTo }) => {
                 </div>
                 {/* Use navigateTo prop for "Go to Dashboard" button */}
                 <button
-                  onClick={() => navigateTo("home")}
+                  onClick={() => navigateTo("newvoldashboard")}
                   className="inline-block px-6 py-3 bg-sky-600 text-white font-bold rounded-lg hover:bg-sky-700 transition"
                 >
                   Go to Dashboard

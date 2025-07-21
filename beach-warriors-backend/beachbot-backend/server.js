@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 require('dotenv').config();
+console.log("🔑 API Key loaded:", process.env.GROQ_API_KEY);
 
 const app = express();
 app.use(cors());
