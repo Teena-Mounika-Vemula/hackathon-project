@@ -6,12 +6,13 @@ const path = require("path");
 const projectName = process.argv[2];
 
 if (!projectName) {
-  console.error("❌ Please provide a project folder name. Usage: npx themexxxxxz my-app");
+  console.error("❌ Please provide a project folder name.");
   process.exit(1);
 }
 
 const targetPath = path.resolve(process.cwd(), projectName);
-const templatePath = path.join(__dirname, "template");
+const templatePath = path.join(__dirname, "beach-warriors-backend", "beachbot-backend");
+
 
 console.log(`🚀 Creating CLI in: ${targetPath}`);
 
